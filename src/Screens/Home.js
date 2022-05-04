@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import React from 'react';
 
-const Home = () => {
+const Home = ({navigation}) => {
   return (
     <View style={styles.container}>
       <ImageBackground
@@ -34,7 +34,13 @@ const Home = () => {
             onPress={() => {
               Alert.alert('Made By Ravi');
             }}>
-            <Text style={styles.btn}>Get Started</Text>
+            <Text
+              style={styles.btn}
+              onPress={() => {
+                navigation.navigate('Page_1');
+              }}>
+              Get Started
+            </Text>
           </TouchableOpacity>
         </View>
       </ImageBackground>
