@@ -12,9 +12,11 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {createDrawerNavigator} from '@react-navigation/drawer';
+import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
+import MainScreen from './src/Screens/MainScreen';
 const App = () => {
   const Stack = createNativeStackNavigator();
-  const Tab = createBottomTabNavigator();
+  const Tab = createMaterialTopTabNavigator();
   const Drawer = createDrawerNavigator();
   return (
     <NavigationContainer>
@@ -22,30 +24,22 @@ const App = () => {
         <Stack.Screen name="Home" component={Home} />
         <Stack.Screen name="Page_1" component={Page_1}/>
       </Stack.Navigator> */}
-      <Tab.Navigator
-        screenOptions={{
-         tabBarShowLabel:false,
-          tabBarStyle: {
-            position: 'absolute',
-            margin: 7,
-            borderRadius: 10,
-          },
-        }}>
+      <Tab.Navigator>
         <Tab.Screen
           name="Home"
           component={Home}
           options={{
+            // tabBarShowLabel: false,
             tabBarIcon: ({focused}) => (
-              <View
-                style={{
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  top: 0,
-                }}>
-                <Icon name="home" size={30} style={{color: focused ? 'red' : 'blue'}} />
-                <Text style={{color: focused ? 'red' : 'blue', fontSize: 12}}>
+              <View>
+                <Icon
+                  name="home"
+                  size={28}
+                  style={{color: focused ? 'red' : 'blue'}}
+                />
+                {/* <Text style={{color: focused ? 'red' : 'blue', fontSize: 15}}>
                   Home
-                </Text>
+                </Text> */}
               </View>
             ),
           }}
@@ -54,18 +48,17 @@ const App = () => {
           name="Page_1"
           component={Page_1}
           options={{
+            // tabBarShowLabel: false,
             tabBarIcon: ({focused}) => (
-              <View
-                style={{
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  top: 0,
-                  
-                }}>
-                <Icon name="slideshow" size={30} style={{color: focused ? 'red' : 'blue'}} />
-                <Text style={{color: focused ? 'red' : 'blue', fontSize: 12}}>
+              <View>
+                <Icon
+                  name="slideshow"
+                  size={28}
+                  style={{color: focused ? 'red' : 'blue'}}
+                />
+                {/* <Text style={{color: focused ? 'red' : 'blue', fontSize: 15}}>
                   List
-                </Text>
+                </Text> */}
               </View>
             ),
           }}

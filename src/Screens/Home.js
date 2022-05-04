@@ -16,7 +16,7 @@ const Home = ({navigation}) => {
     <View style={styles.container}>
       <ImageBackground
         source={{
-          uri: 'https://images.unsplash.com/photo-1496440737103-cd596325d314?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80',
+          uri: 'https://images.pexels.com/photos/1526713/pexels-photo-1526713.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
         }}
         style={styles.image}>
         <View style={styles.bottombox}></View>
@@ -105,7 +105,7 @@ const styles = StyleSheet.create({
     // borderWidth: 1,
   },
   subHead: {
-    margin: 20,
+    margin: 10,
     textAlign: 'center',
     color: 'white',
     fontWeight: 'bold',
