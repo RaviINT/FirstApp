@@ -37,7 +37,7 @@ const Home = ({navigation}) => {
             <Text
               style={styles.btn}
               onPress={() => {
-                navigation.navigate('Page_1');
+                navigation.navigate('Keyboard');
               }}>
               Get Started
             </Text>

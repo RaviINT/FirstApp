@@ -11,77 +11,49 @@ import {
 import React from 'react';
 const KeyboardAvoid = () => {
   return (
-    <View>
-      <KeyboardAvoidingView
-        behavior={Platform.OS === 'android' ? 'padding' : 'height'}
-        style={styles.container}>
-        <ScrollView>
-          <View style={styles.inner}>
-            <Text style={styles.header}>Header</Text>
-            <Text style={styles.header}>Header</Text>
-            <Text style={styles.header}>Header</Text>
-            <Text style={styles.header}>Header</Text>
-            <Text style={styles.header}>Header</Text>
-            <Text style={styles.header}>Header</Text>
-            <Text style={styles.header}>Header</Text>
-            <Text style={styles.header}>Header</Text>
-            <Text style={styles.header}>Header</Text>
-            <Text style={styles.header}>Header</Text>
-            <Text style={styles.header}>Header</Text>
-            <Text style={styles.header}>Header</Text>
-            <Text style={styles.header}>Header</Text>
-            <Text style={styles.header}>Header</Text>
-            <Text style={styles.header}>Header</Text>
-            <Text style={styles.header}>Header</Text>
-            <Text style={styles.header}>Header</Text>
-            <Text style={styles.header}>Header</Text>
-            <Text style={styles.header}>Header</Text>
-            <Text style={styles.header}>Header</Text>
-            <Text style={styles.header}>Header</Text>
+    <KeyboardAvoidingView
+      style={styles.box}
+      behavior={Platform.OS === 'android' ? 'padding' : 'height'}>
+      <View style={styles.container}>
+        <View style={{marginTop:10}}>
+          <Text style={styles.head}>Email</Text>
+          <TextInput style={styles.input} placeholder="Email Here" />
+        </View>
+        <View style={{marginTop:50}}>
+          <Text style={styles.head}>Password</Text>
+          <TextInput style={styles.input} placeholder="Password" />
+        </View>
 
-            <Text style={styles.header}>Header</Text>
-            <Text style={styles.header}>Header</Text>
-            <Text style={styles.header}>Header</Text>
-            <Text style={styles.header}>Header</Text>
-            <Text style={styles.header}>Header</Text>
-            <Text style={styles.header}>Header</Text>
-            <Text style={styles.header}>Header</Text>
-            <Text style={styles.header}>Header</Text>
-            <Text style={styles.header}>Header</Text>
-            <Text style={styles.header}>Header</Text>
-            <Text style={styles.header}>Header</Text>
-
-            <TextInput placeholder="Username" style={styles.textInput} />
-            <View style={styles.btnContainer}>
-              <Button title="Submit" onPress={() => null} />
-            </View>
-          </View>
-        </ScrollView>
-      </KeyboardAvoidingView>
-    </View>
+        <View style={styles.btn}>
+          <Button title="Submit" />
+        </View>
+      </View>
+    </KeyboardAvoidingView>
   );
 };
 const styles = StyleSheet.create({
-  // container: {
-  //   flex: 1,
-  // },
-  // inner: {
-  //   padding: 24,
-  //   flex: 1,
-  //   justifyContent: 'space-around',
-  // },
-  // header: {
-  //   fontSize: 36,
-  // },
-  // textInput: {
-  //   height: 40,
-  //   borderColor: '#000000',
-  //   borderBottomWidth: 1,
-  //   marginBottom: 36,
-  // },
-  // btnContainer: {
-  //   backgroundColor: 'white',
-  //   marginTop: 12,
-  // },
+  box: {
+    flex: 1,
+  },
+  container: {
+    flex: 1,
+    padding: 30,
+    justifyContent: 'space-around',
+  },
+  head: {
+    fontSize: 30,
+    fontWeight: 'bold',
+    color: 'black',
+    
+  },
+  input: {
+    height: 40,
+    borderColor: '#000000',
+    borderBottomWidth: 1,
+    marginBottom: 10,
+  },
+  btn: {
+    marginTop: 60,
+  },
 });
 export default KeyboardAvoid;
