@@ -15,6 +15,7 @@ import {createDrawerNavigator} from '@react-navigation/drawer';
 import Bar from './src/Screens/StatusBar';
 import KeyThings from './src/Screens/Switch';
 import VirtualizedListExample from './src/Screens/VirtualizedListExample';
+import Async from './src/Screens/Async';
 const App = () => {
   const Drawer = createDrawerNavigator();
   return (
@@ -25,7 +26,11 @@ const App = () => {
         <Drawer.Screen name="Keyboard" component={KeyboardAvoid} />
         <Drawer.Screen name="Status Bar" component={Bar} />
         <Drawer.Screen name="KeyThings" component={KeyThings} />
-        <Drawer.Screen name="Virtualized List" component={VirtualizedListExample} />
+        <Drawer.Screen
+          name="Virtualized List"
+          component={VirtualizedListExample}
+        />
+        <Drawer.Screen name="Async Storage" component={Async} />
       </Drawer.Navigator>
     </NavigationContainer>
   );
