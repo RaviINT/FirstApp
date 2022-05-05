@@ -12,14 +12,20 @@ import {NavigationContainer} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import MainScreen from './src/Screens/MainScreen';
 import {createDrawerNavigator} from '@react-navigation/drawer';
+import Bar from './src/Screens/StatusBar';
+import KeyThings from './src/Screens/Switch';
+import VirtualizedListExample from './src/Screens/VirtualizedListExample';
 const App = () => {
   const Drawer = createDrawerNavigator();
   return (
     <NavigationContainer>
       <Drawer.Navigator initialRouteName="Home">
-        <Drawer.Screen name="Home" component={MainScreen} />
+        <Drawer.Screen name="Main" component={MainScreen} />
         <Drawer.Screen name="Contact" component={Contact} />
         <Drawer.Screen name="Keyboard" component={KeyboardAvoid} />
+        <Drawer.Screen name="Status Bar" component={Bar} />
+        <Drawer.Screen name="KeyThings" component={KeyThings} />
+        <Drawer.Screen name="Virtualized List" component={VirtualizedListExample} />
       </Drawer.Navigator>
     </NavigationContainer>
   );
