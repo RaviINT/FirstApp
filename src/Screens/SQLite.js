@@ -2,10 +2,13 @@ import {View, Text, TextInput, Button, StyleSheet} from 'react-native';
 import React from 'react';
 import SQLite from 'react-native-sqlite-storage';
 import {useEffect} from 'react';
+import {useState} from 'react';
 const SQ = () => {
+  const [name, setName] = useState('');
+  const [age, setAge] = useState('');
   useEffect(() => {
     createTable();
-  });
+  }, []);
   const db = SQLite.openDatabase(
     {
       name: 'MainDB',
@@ -33,14 +36,45 @@ const SQ = () => {
       },
     );
   };
+  const store = async () => {
+    try {
+      await db.transaction(
+        async tx => {
+          await tx.executeSql(
+            "INSERT INTO Users(Name, Age) VALUES ('" + name + "'," + age + ')',
+          );
+        },
+        () => {
+          console.log('Success');
+        },
+      );
+    } catch (err) {
+      console.log(err);
+    }
+  };
   return (
     <View>
       <Text style={styles.Heading}>SQLite</Text>
       <View style={styles.container}>
-        <TextInput placeholder="Name" style={styles.input} />
-        <TextInput placeholder="Age" style={styles.input} />
+        <TextInput
+          placeholder="Name"
+          onChangeText={e => setName(e)}
+          value={name}
+          style={styles.input}
+        />
+        <TextInput
+          placeholder="Age"
+          onChangeText={e => setAge(e)}
+          value={age}
+          style={styles.input}
+        />
         <View style={styles.btn}>
-          <Button title="Save" />
+          <Button
+            title="Save"
+            onPress={() => {
+              store();
+            }}
+          />
         </View>
       </View>
     </View>
@@ -64,14 +98,12 @@ const styles = StyleSheet.create({
   input: {
     borderBottomWidth: 1,
     margin: 20,
-    fontSize:25
-
-    
+    fontSize: 25,
   },
   btn: {
-    width:"50%",
-    
-    marginHorizontal:"25%"
+    width: '50%',
+
+    marginHorizontal: '25%',
   },
 });
 export default SQ;
