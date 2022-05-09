@@ -16,6 +16,7 @@ import Bar from './src/Screens/StatusBar';
 import KeyThings from './src/Screens/Switch';
 import VirtualizedListExample from './src/Screens/VirtualizedListExample';
 import Async from './src/Screens/Async';
+import SQ from './src/Screens/SQLite';
 const App = () => {
   const Drawer = createDrawerNavigator();
   return (
@@ -31,6 +32,7 @@ const App = () => {
           component={VirtualizedListExample}
         />
         <Drawer.Screen name="Async Storage" component={Async} />
+        <Drawer.Screen name="SQ Lite" component={SQ} />
       </Drawer.Navigator>
     </NavigationContainer>
   );
