@@ -1,109 +1,119 @@
-import {View, Text, TextInput, Button, StyleSheet} from 'react-native';
-import React from 'react';
-import SQLite from 'react-native-sqlite-storage';
-import {useEffect} from 'react';
-import {useState} from 'react';
-const SQ = () => {
-  const [name, setName] = useState('');
-  const [age, setAge] = useState('');
-  useEffect(() => {
-    createTable();
-  }, []);
-  const db = SQLite.openDatabase(
-    {
-      name: 'MainDB',
-      location: 'default',
-    },
-    () => {
-      console.log('Database Created');
-    },
-    err => {
-      console.log(err);
-    },
-  );
+import React, {useEffect, useState} from 'react';
+import {View, Text, StatusBar, TextInput, Button, FlatList} from 'react-native';
+import {openDatabase} from 'react-native-sqlite-storage';
 
-  const createTable = () => {
-    db.transaction(
-      tx => {
-        tx.executeSql(
-          'CREATE TABLE IF DOES NOT EXISTS' +
-            'USERS' +
-            '(ID INTEGER PRIMARY KEY AUTOINCREMENT, NAME TEXT, AGE INTEGER)',
-        );
-      },
-      () => {
-        console.log('table created');
-      },
-    );
-  };
-  const store = async () => {
-    try {
-      await db.transaction(
-        async tx => {
-          await tx.executeSql(
-            "INSERT INTO Users(Name, Age) VALUES ('" + name + "'," + age + ')',
-          );
+const db = openDatabase({
+  name: 'rn_sqlite',
+});
+
+const App = () => {
+  const [category, setCategory] = useState('');
+  const [categories, setCategories] = useState([]);
+
+  const createTables = () => {
+    db.transaction(txn => {
+      txn.executeSql(
+        `CREATE TABLE IF NOT EXISTS categories (id INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR(20))`,
+        [],
+        (sqlTxn, res) => {
+          console.log('table created successfully');
         },
-        () => {
-          console.log('Success');
+        error => {
+          console.log('error on creating table ' + error.message);
         },
       );
-    } catch (err) {
-      console.log(err);
-    }
+    });
   };
+
+  const addCategory = () => {
+    if (!category) {
+      alert('Enter category');
+      return false;
+    }
+
+    db.transaction(txn => {
+      txn.executeSql(
+        `INSERT INTO categories (name) VALUES (?)`,
+        [category],
+        (sqlTxn, res) => {
+          console.log(`${category} category added successfully`);
+          getCategories();
+          setCategory('');
+        },
+        error => {
+          console.log('error on adding category ' + error.message);
+        },
+      );
+    });
+  };
+
+  const getCategories = () => {
+    db.transaction(txn => {
+      txn.executeSql(
+        `SELECT * FROM categories ORDER BY id DESC`,
+        [],
+        (sqlTxn, res) => {
+          console.log('categories retrieved successfully');
+          let len = res.rows.length;
+
+          if (len > 0) {
+            let results = [];
+            for (let i = 0; i < len; i++) {
+              let item = res.rows.item(i);
+              results.push({id: item.id, name: item.name});
+            }
+
+            setCategories(results);
+          }
+        },
+        error => {
+          console.log('error on getting categories ' + error.message);
+        },
+      );
+    });
+  };
+
+  const renderCategory = ({item}) => {
+    return (
+      <View
+        style={{
+          flexDirection: 'row',
+          paddingVertical: 12,
+          paddingHorizontal: 10,
+          borderBottomWidth: 1,
+          borderColor: '#ddd',
+        }}>
+        <Text style={{marginRight: 9}}>{item.id}</Text>
+        <Text>{item.name}</Text>
+      </View>
+    );
+  };
+
+  useEffect(async () => {
+    await createTables();
+    await getCategories();
+  }, []);
+
   return (
     <View>
-      <Text style={styles.Heading}>SQLite</Text>
-      <View style={styles.container}>
-        <TextInput
-          placeholder="Name"
-          onChangeText={e => setName(e)}
-          value={name}
-          style={styles.input}
-        />
-        <TextInput
-          placeholder="Age"
-          onChangeText={e => setAge(e)}
-          value={age}
-          style={styles.input}
-        />
-        <View style={styles.btn}>
-          <Button
-            title="Save"
-            onPress={() => {
-              store();
-            }}
-          />
-        </View>
-      </View>
+      <StatusBar backgroundColor="#222" />
+
+      <TextInput
+        placeholder="Enter category"
+        value={category}
+        onChangeText={setCategory}
+        style={{marginHorizontal: 8}}
+      />
+
+      <Button title="Submit" onPress={addCategory} />
+
+      <FlatList
+        data={categories}
+        renderItem={renderCategory}
+        key={cat => cat.id}
+      />
     </View>
   );
 };
-const styles = StyleSheet.create({
-  Heading: {
-    fontSize: 40,
-    textAlign: 'center',
-    color: 'black',
-    margin: 10,
-  },
-  container: {
-    // borderWidth: 1,
-    // flex: 1,
-    width: '60%',
-    margin: '20%',
-    // justifyContent: 'center',
-    // alignItems: 'center',
-  },
-  input: {
-    borderBottomWidth: 1,
-    margin: 20,
-    fontSize: 25,
-  },
-  btn: {
-    width: '50%',
 
-    marginHorizontal: '25%',
-  },
-});
-export default SQ;
+export default App;
