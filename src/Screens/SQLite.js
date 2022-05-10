@@ -3,23 +3,22 @@ import {View, Text, StatusBar, TextInput, Button, FlatList} from 'react-native';
 import {openDatabase} from 'react-native-sqlite-storage';
 
 const db = openDatabase({
-  name: 'rn_sqlite',
+  name: 'todo',
 });
-
 const App = () => {
   const [category, setCategory] = useState('');
   const [categories, setCategories] = useState([]);
 
-  const createTables = () => {
+  const createTable = () => {
     db.transaction(txn => {
       txn.executeSql(
-        `CREATE TABLE IF NOT EXISTS categories (id INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR(20))`,
+        'CREATE TABLE IF NOT EXISTS List (id INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR(20))',
         [],
-        (sqlTxn, res) => {
-          console.log('table created successfully');
-        },
-        error => {
-          console.log('error on creating table ' + error.message);
+        () => {
+          console.log('Table Created Succesfully'),
+            err => {
+              console.log(err.message);
+            };
         },
       );
     });
@@ -27,33 +26,31 @@ const App = () => {
 
   const addCategory = () => {
     if (!category) {
-      alert('Enter category');
+      alert('Enter Category');
       return false;
     }
 
     db.transaction(txn => {
       txn.executeSql(
-        `INSERT INTO categories (name) VALUES (?)`,
+        'INSERT INTO List (name) VALUES (?)',
         [category],
-        (sqlTxn, res) => {
-          console.log(`${category} category added successfully`);
-          getCategories();
+        () => {
+          console.log(`${category} added succesfully`);
           setCategory('');
         },
-        error => {
-          console.log('error on adding category ' + error.message);
+        err => {
+          console.log(err.message);
         },
       );
     });
   };
 
-  const getCategories = () => {
+  const getList = () => {
     db.transaction(txn => {
       txn.executeSql(
-        `SELECT * FROM categories ORDER BY id DESC`,
+        'SELECT * FROM List',
         [],
         (sqlTxn, res) => {
-          console.log('categories retrieved successfully');
           let len = res.rows.length;
 
           if (len > 0) {
@@ -64,10 +61,11 @@ const App = () => {
             }
 
             setCategories(results);
+            console.log('List get Succesfully');
           }
         },
-        error => {
-          console.log('error on getting categories ' + error.message);
+        err => {
+          console.log(err.message);
         },
       );
     });
@@ -89,13 +87,13 @@ const App = () => {
     );
   };
 
-  useEffect(async () => {
-    await createTables();
-    await getCategories();
+  useEffect(() => {
+    createTable();
+    getList();
   }, []);
 
   return (
-    <View>
+    <View style={{margin: 30}}>
       <StatusBar backgroundColor="#222" />
 
       <TextInput
