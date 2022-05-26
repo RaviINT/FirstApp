@@ -2,7 +2,7 @@ import {View, Text, TextInput, StyleSheet, Button} from 'react-native';
 import React from 'react';
 import {AuthContext} from '../Authentication/Context';
 
-const Login = () => {
+const Login = ({navigation}) => {
   const {signIn} = React.useContext(AuthContext);
   return (
     <View>
@@ -18,6 +18,9 @@ const Login = () => {
         />
         <View style={styles.btn}>
           <Button title="Submit" onPress={() => signIn()} />
+        </View>
+        <View style={styles.btn}>
+          <Button title="Sign Up" onPress={() => navigation.navigate("Signup")} />
         </View>
       </View>
     </View>

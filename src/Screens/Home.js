@@ -10,8 +10,9 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import React from 'react';
-
+import { AuthContext } from '../Authentication/Context';
 const Home = ({navigation}) => {
+  const {signout}=React.useContext(AuthContext)
   return (
     <View style={styles.container}>
       <ImageBackground
@@ -37,9 +38,9 @@ const Home = ({navigation}) => {
             <Text
               style={styles.btn}
               onPress={() => {
-                navigation.navigate('Keyboard');
+                signout()
               }}>
-              Get Started
+              Logout
             </Text>
           </TouchableOpacity>
         </View>

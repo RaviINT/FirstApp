@@ -21,15 +21,15 @@ const App = () => {
       setToken('dafafsadfad');
       setLoading(false);
     },
-    signUp: () => {
+    signout: () => {
       setToken(null);
       setLoading(false);
     },
-    signout: () => {
+    signup: () => {
       setToken('dafafsadfad');
       setLoading(false);
     },
-  }));
+  }),[]);
   useEffect(() => {
     setTimeout(() => {
       setLoading(false);
@@ -44,14 +44,13 @@ const App = () => {
       />
     );
   }
-  console.log(userToken)
+  console.log(userToken);
   return (
     <AuthContext.Provider value={authContext}>
       <NavigationContainer>
         {userToken !== null ? (
           <Drawer.Navigator initialRouteName="Home">
             <Drawer.Screen name="Main" component={MainScreen} />
-
             <Drawer.Screen name="Keyboard" component={KeyboardAvoid} />
             <Drawer.Screen name="Status Bar" component={Bar} />
             <Drawer.Screen name="KeyThings" component={KeyThings} />

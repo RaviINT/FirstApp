@@ -7,7 +7,9 @@ import {
   ScrollView,
 } from 'react-native';
 import React from 'react';
+import {AuthContext} from './Context';
 const Signup = ({navigation}) => {
+  const {signup} = React.useContext(AuthContext);
   return (
     <View>
       <Text style={styles.heading}>Sign Up</Text>
@@ -28,7 +30,12 @@ const Signup = ({navigation}) => {
             style={styles.input}
           />
           <View style={styles.btn}>
-            <Button title="Submit" />
+            <Button
+              title="Submit"
+              onPress={() => {
+                signup();
+              }}
+            />
           </View>
           <View style={styles.btn}>
             <Button
