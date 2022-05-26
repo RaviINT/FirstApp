@@ -5,7 +5,7 @@ import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import Page_1 from './SelectionList';
-import Contact from './Contact';
+import Contact from './RootNavigation';
 const MainScreen = () => {
   const Tab = createMaterialTopTabNavigator();
   return (
