@@ -11,32 +11,100 @@ import VirtualizedListExample from './src/Screens/VirtualizedListExample';
 import Async from './src/Screens/Async';
 import SQ from './src/Screens/SQLite';
 import {AuthContext} from './src/Authentication/Context';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const App = () => {
   const Drawer = createDrawerNavigator();
-  const [isLoading, setLoading] = React.useState(true);
-  const [userToken, setToken] = React.useState(null);
-  const authContext = React.useMemo(() => ({
-    signIn: () => {
-      setToken('dafafsadfad');
-      setLoading(false);
-    },
-    signout: () => {
-      setToken(null);
-      setLoading(false);
-    },
-    signup: () => {
-      setToken('dafafsadfad');
-      setLoading(false);
-    },
-  }),[]);
+  const initialState = {
+    userEmail: null,
+    userToken: null,
+    isLoading: false,
+  };
+  const loginReducer = (prevState, action) => {
+    switch (action.type) {
+      case 'INITIALTOKEN':
+        return {...prevState, isLoading: false, userToken: action.token};
+      case 'LOGIN':
+        return {
+          ...prevState,
+          isLoading: false,
+          userEmail: action.id,
+          userToken: action.token,
+        };
+      case 'LOGOUT':
+        return {
+          ...prevState,
+          isLoading: false,
+          userEmail: null,
+          userToken: null,
+        };
+      case 'SIGNUP':
+        return {
+          ...prevState,
+          isLoading: false,
+          userEmail: action.id,
+          userToken: action.token,
+        };
+    }
+  };
+  const [loginState, dispatch] = React.useReducer(loginReducer, initialState);
+  const authContext = React.useMemo(
+    () => ({
+      signIn: async (Email, password) => {
+        try {
+          let userToken = null;
+          if ((Email == 'user', password == 'pass')) {
+            userToken =
+              Math.random().toString(36).substring(2, 15) +
+              Math.random().toString(36).substring(2, 15);
+            await AsyncStorage.setItem('userToken', userToken);
+          } else {
+            alert('check your credientials');
+          }
+          dispatch({type: 'LOGIN', id: Email, token: userToken});
+        } catch (err) {
+          console.log(err);
+        }
+      },
+      signout: async () => {
+        try {
+          await AsyncStorage.removeItem('userToken');
+        } catch (err) {
+          console.log(err);
+        }
+        dispatch({type: 'LOGOUT'});
+      },
+      signup: async (email, mobile, password) => {
+        try {
+          let userToken = null;
+          if ((email != '', mobile != '', password != '')) {
+            userToken =
+              Math.random().toString(36).substring(2, 15) +
+              Math.random().toString(36).substring(2, 15);
+            await AsyncStorage.setItem('userToken', userToken);
+            dispatch({
+              type: 'SIGNUP',
+              id: email,
+              mobile: mobile,
+              password: password,
+              token: userToken,
+            });
+          } else {
+            alert('check your credientials');
+          }
+        } catch (err) {
+          console.log(err);
+        }
+      },
+    }),
+    [],
+  );
   useEffect(() => {
     setTimeout(() => {
-      setLoading(false);
+      // dispatch({type: 'INITIALTOKEN', token: '213sdfawr1'});
     }, 1000);
   }, []);
 
-  if (isLoading) {
+  if (loginState.isLoading) {
     return (
       <ActivityIndicator
         style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}
@@ -44,11 +112,11 @@ const App = () => {
       />
     );
   }
-  console.log(userToken);
+  // console.log(userToken);
   return (
     <AuthContext.Provider value={authContext}>
       <NavigationContainer>
-        {userToken !== null ? (
+        {loginState.userToken !== null ? (
           <Drawer.Navigator initialRouteName="Home">
             <Drawer.Screen name="Main" component={MainScreen} />
             <Drawer.Screen name="Keyboard" component={KeyboardAvoid} />

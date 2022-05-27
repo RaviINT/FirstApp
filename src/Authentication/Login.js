@@ -1,26 +1,43 @@
 import {View, Text, TextInput, StyleSheet, Button} from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
 import {AuthContext} from '../Authentication/Context';
 
 const Login = ({navigation}) => {
   const {signIn} = React.useContext(AuthContext);
+  const [Email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const handleLogin = () => {
+    signIn(Email,password)
+  };
   return (
     <View>
       <Text style={styles.heading}>Login</Text>
       <View style={styles.box}>
         <Text style={styles.label}>Email</Text>
-        <TextInput placeholder="Email" style={styles.input} />
+        <TextInput
+          placeholder="Email"
+          style={styles.input}
+          name="Email"
+          value={Email}
+          onChangeText={e => setEmail(e)}
+        />
         <Text style={styles.label}>Password</Text>
         <TextInput
           placeholder="Password"
           secureTextEntry={true}
           style={styles.input}
+          name="password"
+          value={password}
+          onChangeText={e => setPassword(e)}
         />
         <View style={styles.btn}>
-          <Button title="Submit" onPress={() => signIn()} />
+          <Button title="Submit" onPress={() => handleLogin()} />
         </View>
         <View style={styles.btn}>
-          <Button title="Sign Up" onPress={() => navigation.navigate("Signup")} />
+          <Button
+            title="Sign Up"
+            onPress={() => navigation.navigate('Signup')}
+          />
         </View>
       </View>
     </View>
