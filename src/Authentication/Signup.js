@@ -12,23 +12,26 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useDrawerStatus} from '@react-navigation/drawer';
 const Signup = ({navigation}) => {
   const {signup} = React.useContext(AuthContext);
+  const [oldData, setOldData] = useState([]);
   const [email, setEmail] = useState('');
   const [mobile, setMobile] = useState('');
   const [password, setPassword] = useState('');
   const handleSignup = async () => {
     store();
-    const data = await AsyncStorage.getItem('usersData');
-    // console.log(data);
-    // console.log(email, mobile, password);
-    // signup(email, mobile, password);
   };
   const store = async () => {
     try {
-      const data = {email: email, mobile: mobile, password: password};
-      const get = AsyncStorage.getItem('usersData');
+      const fetchData = await AsyncStorage.getItem('userData');
+      await setOldData(fetchData);
 
-      console.log(get);
-      // await AsyncStorage.setItem('usersData', JSON.stringify(data));
+      const data = {
+        email: email,
+        mobile: mobile,
+        password: password,
+      };
+      await setOldData([{...oldData}, data]);
+      console.log(oldData);
+      // await AsyncStorage.setItem('userData', JSON.stringify(oldData));
     } catch (err) {
       console.log(err);
     }

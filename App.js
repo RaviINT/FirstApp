@@ -12,11 +12,12 @@ import Async from './src/Screens/Async';
 import SQ from './src/Screens/SQLite';
 import {AuthContext} from './src/Authentication/Context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Bottomsheet from './src/Screens/BottomSheet';
 const App = () => {
   const Drawer = createDrawerNavigator();
   const initialState = {
     userEmail: null,
-    userToken: null,
+    userToken: "dsfdsfds",
     isLoading: false,
   };
   const loginReducer = (prevState, action) => {
@@ -128,6 +129,7 @@ const App = () => {
             />
             <Drawer.Screen name="Async Storage" component={Async} />
             <Drawer.Screen name="SQ Lite" component={SQ} />
+            <Drawer.Screen name="BottomSheet" component={Bottomsheet} />
           </Drawer.Navigator>
         ) : (
           <RootNavigation />
